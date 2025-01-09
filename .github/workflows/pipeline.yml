@@ -74,6 +74,3 @@ jobs:
           # Authenticate with Google Drive using the service account
           echo "${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}" > /tmp/credentials.json
           gdrive about --service-account /tmp/credentials.json
-
-          # # Upload the APK to Google Drive using the folder ID
-          # gdrive upload --service-account /tmp/credentials.json --parent ${{ secrets.UPLOAD_FOLDER }} android/app/build/outputs/apk/dev/release/app-dev-release.apk
