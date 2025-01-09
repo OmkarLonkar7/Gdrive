@@ -71,6 +71,8 @@ jobs:
           chmod +x gdrive
           mv gdrive /usr/local/bin/
 
+          # Write the service account JSON key to a file using printf
+          printf "%s" "${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}" > /tmp/credentials.json
+
           # Authenticate with Google Drive using the service account
-          echo "${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}" > /tmp/credentials.json
           gdrive about --service-account /tmp/credentials.json
