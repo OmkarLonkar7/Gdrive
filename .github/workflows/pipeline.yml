@@ -71,25 +71,26 @@ jobs:
           chmod +x gdrive
           mv gdrive /usr/local/bin/
 
-          # Write the service account JSON key to a file using printf
-          printf "%s" "${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}" > /tmp/credentials.json
+          # Define the location where we want to save the credentials file
+          CREDENTIALS_PATH="/home/runner/.gdrive/tmp/credentials.json"
 
-          # File path
-          FILE_PATH="/tmp/credentials.json"
+          # Write the service account JSON key to the defined location using printf
+          mkdir -p $(dirname $CREDENTIALS_PATH)
+          printf "%s" "${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}" > $CREDENTIALS_PATH
 
           # Ensure the file has proper permissions (readable)
-          chmod 600 $FILE_PATH
+          chmod 600 $CREDENTIALS_PATH
 
           # Check if the file exists and report the file size, name, and location
-          if [ -f $FILE_PATH ]; then
+          if [ -f $CREDENTIALS_PATH ]; then
             echo "Service account key file created successfully."
-            echo "File name: $(basename $FILE_PATH)"
-            echo "File location: $FILE_PATH"
-            echo "Absolute path: $(realpath $FILE_PATH)"
-            echo "File size: $(stat -c %s $FILE_PATH) bytes"
+            echo "File name: $(basename $CREDENTIALS_PATH)"
+            echo "File location: $CREDENTIALS_PATH"
+            echo "Absolute path: $(realpath $CREDENTIALS_PATH)"
+            echo "File size: $(stat -c %s $CREDENTIALS_PATH) bytes"
             # Print the file content (WARNING: Sensitive data!)
             echo "File content:"
-            cat $FILE_PATH
+            cat $CREDENTIALS_PATH
            else
               echo "Error: Service account key file was not created."
               exit 1
@@ -97,8 +98,8 @@ jobs:
 
           # Debugging: Verify if the file is accessible by printing its contents and checking path
           echo "Attempting to run 'gdrive about' with service account file..."
-          cat $FILE_PATH  # Ensure file is accessible
-          realpath $FILE_PATH  # Ensure absolute path is correct  
+          cat $CREDENTIALS_PATH  # Ensure file is accessible
+          realpath $CREDENTIALS_PATH  # Ensure absolute path is correct  
 
           # Authenticate with Google Drive using the service account
-          gdrive about --service-account $FILE_PATH
+          gdrive about --service-account $CREDENTIALS_PATH
