@@ -72,5 +72,5 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v3
         with:
-          name: app-dev-release-v${{ env.VERSION }}.apk
+          name: app-dev-release.apk
           path: android/app/build/outputs/apk/dev/release/app-dev-release.apk
