@@ -82,6 +82,7 @@ jobs:
             echo "Service account key file created successfully."
             echo "File name: $(basename $FILE_PATH)"
             echo "File location: $FILE_PATH"
+            echo "Absolute path: $(realpath $FILE_PATH)"
             echo "File size: $(stat -c %s $FILE_PATH) bytes"
             # Print the file content (WARNING: Sensitive data!)
             echo "File content:"
