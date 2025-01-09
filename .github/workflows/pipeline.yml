@@ -74,5 +74,14 @@ jobs:
           # Write the service account JSON key to a file using printf
           printf "%s" "${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}" > /tmp/credentials.json
 
+          # Check if the file exists and report the file size
+          if [ -f /tmp/credentials.json ]; then
+              echo "Service account key file created successfully."
+              echo "File size: $(stat -c %s /tmp/credentials.json) bytes"
+          else
+              echo "Error: Service account key file was not created."
+              exit 1
+          fi
+
           # Authenticate with Google Drive using the service account
           gdrive about --service-account /tmp/credentials.json
