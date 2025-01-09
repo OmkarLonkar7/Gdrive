@@ -89,6 +89,8 @@ jobs:
             echo "File location: $CREDENTIALS_PATH"
             echo "Absolute path: $(realpath $CREDENTIALS_PATH)"
             echo "File size: $(stat -c %s $CREDENTIALS_PATH) bytes"
+            echo "File content:"
+            cat $CREDENTIALS_PATH
            else
               echo "Error: Service account key file was not created."
               exit 1
