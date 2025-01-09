@@ -73,6 +73,7 @@ jobs:
 
           # Define the location where we want to save the credentials file
           CREDENTIALS_PATH="/home/runner/.gdrive/tmp/credentials.json"
+          CREDENTIALS_PATH2="/tmp/credentials.json"
 
           # Write the service account JSON key to the defined location using printf
           mkdir -p $(dirname $CREDENTIALS_PATH)
@@ -102,4 +103,4 @@ jobs:
           realpath $CREDENTIALS_PATH  # Ensure absolute path is correct  
 
           # Authenticate with Google Drive using the service account
-          gdrive about --service-account $CREDENTIALS_PATH
+          gdrive about --service-account $CREDENTIALS_PATH2
