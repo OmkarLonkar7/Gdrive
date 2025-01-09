@@ -90,17 +90,12 @@ jobs:
             echo "Absolute path: $(realpath $CREDENTIALS_PATH)"
             echo "File size: $(stat -c %s $CREDENTIALS_PATH) bytes"
             # Print the file content (WARNING: Sensitive data!)
-            echo "File content:"
-            cat $CREDENTIALS_PATH
+            # echo "File content:"
+            # cat $CREDENTIALS_PATH
            else
               echo "Error: Service account key file was not created."
               exit 1
             fi
-
-          # Debugging: Verify if the file is accessible by printing its contents and checking path
-          echo "Attempting to run 'gdrive about' with service account file..."
-          cat $CREDENTIALS_PATH  # Ensure file is accessible
-          realpath $CREDENTIALS_PATH  # Ensure absolute path is correct  
 
           # Authenticate with Google Drive using the service account
           gdrive about --service-account $CREDENTIALS_PATH2
