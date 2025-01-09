@@ -1,60 +1,64 @@
-name: React Native CI Pipeline
+name: Build Android APK
 
 on:
   push:
     branches:
-      - feat/driveUpload # Trigger the workflow on push to the feat/driveUpload branch
+      - feat/driveUpload
 
 jobs:
   build:
-    name: Build and Test React Native App
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the repository
+      # Step 1: Checkout the repository code
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
-      # Step 2: Set up Node.js
+      # Step 2: Check initial disk usage
+      - name: Check available disk space after cleanup
+        run: df -h
+
+      # Step 3: Define Version Manually
+      - name: Set Version Manually
+        run: echo "VERSION=0.0.1" >> $GITHUB_ENV
+
+      # Step 7: Set up Node.js
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v2
         with:
-          node-version: 16 # Match the Node.js version used in your project
+          node-version: "18"
 
-      # Step 3: Install dependencies
+      # Step 8: Set up JDK for Android builds
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          distribution: "temurin"
+          java-version: "17"
+
+      # Step 9: Install dependencies
       - name: Install dependencies
-        run: npm install
+        run: yarn
 
-      # Step 4: Set up Java for Android build
-      - name: Set up Java
-        uses: actions/setup-java@v3
-        with:
-          distribution: "zulu"
-          java-version: "11" # Java 11 is required for modern Android builds
+        # Step 10: Analyze disk space after dependency installation
 
-      # Step 5: Install Android SDK
-      - name: Install Android SDK
+      # Step 11: Load assets for the Android build
+      - name: Load assets
         run: |
-          sudo apt-get update
-          sudo apt-get install -y openjdk-11-jdk wget unzip
-          wget https://dl.google.com/android/repository/commandlinetools-linux-8512546_latest.zip -O commandlinetools.zip
-          mkdir -p $HOME/android-sdk/cmdline-tools
-          unzip -q commandlinetools.zip -d $HOME/android-sdk/cmdline-tools
-          mv $HOME/android-sdk/cmdline-tools/cmdline-tools $HOME/android-sdk/cmdline-tools/latest
-          export ANDROID_HOME=$HOME/android-sdk
-          export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH
-          yes | sdkmanager --licenses
-          sdkmanager "platform-tools" "platforms;android-33" "build-tools;33.0.2"
+          npx react-native bundle \
+          --platform android \
+          --dev false \
+          --entry-file index.js \
+          --bundle-output android/app/src/main/assets/index.android.bundle \
+          --assets-dest android/app/src/main/res
 
-      # Step 6: Build the APK
-      - name: Build APK
+      # Step 12: Build APKs for different environments
+      - name: Build Development APK
         run: |
           cd android
-          ./gradlew assembleRelease
+          ./gradlew assembleDevelopment
 
-      # Step 7: Upload APK as a build artifact (optional)
-      - name: Upload APK
-        uses: actions/upload-artifact@v3
-        with:
-          name: app-release.apk
-          path: android/app/build/outputs/apk/release/app-release.apk
+      # Step 13: Rename APKs with Version
+      - name: Rename APKs with Version
+        run: |
+          mv android/app/build/outputs/apk/development/release/app-development-release.apk \
+             android/app/build/outputs/apk/development/release/fms-operator-development-v${VERSION}.apk
