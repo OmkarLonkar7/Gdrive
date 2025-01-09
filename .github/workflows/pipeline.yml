@@ -55,9 +55,25 @@ jobs:
           cd android
           ./gradlew assembleDevRelease
 
-      # Step 9: Upload APK as a build artifact
-      - name: Upload APK
+        # Step 9: Upload APK as a build artifact (optional)
+      - name: Upload APK as a build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: app-dev-release-v${{ env.VERSION }}.apk
+          name: app-dev-release.apk
           path: android/app/build/outputs/apk/dev/release/app-dev-release.apk
+
+      # Step 10: Upload APK to Google Drive
+      - name: Upload APK to Google Drive
+        run: |
+          # Download and extract the gdrive CLI tool
+          wget -q https://github.com/prasmussen/gdrive/releases/download/2.1.1/gdrive_2.1.1_linux_386.tar.gz
+          tar -xvzf gdrive_2.1.1_linux_386.tar.gz
+          chmod +x gdrive
+          mv gdrive /usr/local/bin/
+
+          # Authenticate with Google Drive using the service account
+          echo "${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}" > /tmp/credentials.json
+          gdrive about --service-account /tmp/credentials.json
+
+          # Upload the APK to Google Drive using the folder ID
+          gdrive upload --service-account /tmp/credentials.json --parent ${{ secrets.UPLOAD_FOLDER }} android/app/build/outputs/apk/dev/release/app-dev-release.apk
