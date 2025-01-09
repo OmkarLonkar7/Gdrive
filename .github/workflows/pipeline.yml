@@ -39,8 +39,6 @@ jobs:
       - name: Install dependencies
         run: yarn
 
-        # Step 10: Analyze disk space after dependency installation
-
       # Step 11: Load assets for the Android build
       - name: Load assets
         run: |
@@ -55,10 +53,4 @@ jobs:
       - name: Build Development APK
         run: |
           cd android
-          ./gradlew assembleDevelopment
-
-      # Step 13: Rename APKs with Version
-      - name: Rename APKs with Version
-        run: |
-          mv android/app/build/outputs/apk/development/release/app-development-release.apk \
-             android/app/build/outputs/apk/development/release/fms-operator-development-v${VERSION}.apk
+          ./gradlew assembleRelease
