@@ -54,3 +54,9 @@ jobs:
         run: |
           cd android
           ./gradlew assembleRelease
+      # Step 7: Upload APK as a build artifact (optional)
+      - name: Upload APK
+        uses: actions/upload-artifact@v2
+        with:
+          name: app-release.apk
+          path: android/app/build/outputs/apk/release/app-release.apk
