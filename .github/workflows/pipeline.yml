@@ -50,20 +50,14 @@ jobs:
           --assets-dest android/app/src/main/res
 
       # Step 12: Build APKs for different environments
-      - name: Build Prod APK
+      - name: Build Dev APK
         run: |
           cd android
           ./gradlew assembleDevRelease
 
-      # Step 13: Rename APKs with Version
-      - name: Rename APKs with Version
-        run: |
-          mv android/app/build/outputs/apk/dev/release/app-dev-release.apk \
-             android/app/build/outputs/apk/dev/release/app-dev-release-v${VERSION}.apk
-
-      # Step 7: Upload APK as a build artifact (optional)
+        # Step 7: Upload APK as a build artifact (optional)
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: app-dev-release-v${VERSION}.apk
-          path: android/app/build/outputs/apk/dev/release/app-dev-release-v${VERSION}.apk
+          name: app-dev-release.apk
+          path: android/app/build/outputs/apk/dev/release/app-dev-release.apk
