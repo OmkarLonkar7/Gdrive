@@ -55,20 +55,7 @@ jobs:
           cd android
           ./gradlew assembleDevRelease
 
-      # # Step 9: Rename APK with version
-      # - name: Rename APK with Version
-      #   run: |
-      #     mv android/app/build/outputs/apk/dev/release/app-dev-release.apk \
-      #        android/app/build/outputs/apk/dev/release/app-dev-release-v${{ env.VERSION }}.apk
-
-      # # Step 10: Upload APK as a build artifact
-      # - name: Upload APK
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     name: app-dev-release-v${{ env.VERSION }}.apk
-      #     path: android/app/build/outputs/apk/dev/release/app-dev-release-v${{ env.VERSION }}.apk
-
-      # Step 10: Upload APK as a build artifact
+      # Step 9: Upload APK as a build artifact
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
