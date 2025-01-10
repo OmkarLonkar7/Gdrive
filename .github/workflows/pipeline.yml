@@ -62,14 +62,23 @@ jobs:
           name: app-dev-release.apk
           path: android/app/build/outputs/apk/dev/release/app-dev-release.apk
 
-        # Step 10: Upload APK to Google Drive
-      - name: Upload APK to Google Drive
-        uses: actions/checkout@v2
-
-      - name: Upload a file to Google Drive
-        uses: willo32/google-drive-upload-action@v1
+      - name: Upload to gdrive
+        uses: adityak74/google-drive-upload-git-action@main
         with:
-          name: app-dev-release
-          target: android/app/build/outputs/apk/dev/release/app-dev-release.apk
-          credentials: ${{ secrets.YOUR_SERVICE_ACCOUNT_CREDENTIALS }}
-          parent_folder_id: ${{ secrets.UPLOAD_FOLDER }}
+          credentials: ${{ secrets.credentials }}
+          filename: "archive.zip"
+          folderId: ${{ secrets.folderId }}
+          name: "documentation.zip" # optional string
+          overwrite: "true" # optional boolean
+      - name: Make Directory Structure
+        run: |
+          mkdir -p w/x/y
+          date +%s > w/x/y/z
+      - name: Mirror Directory Structure
+        uses: adityak74/google-drive-upload-git-action@main
+        with:
+          credentials: ${{ secrets.DRIVE_CREDENTIALS }}
+          filename: w/x/y/z
+          folderId: ${{ secrets.folderId }}
+          overwrite: "true"
+          mirrorDirectoryStructure: "true"
