@@ -20,7 +20,7 @@ jobs:
 
       # Step 3: Define Version Manually
       - name: Set Version Manually
-        run: echo "VERSION=0.0.1" >> $GITHUB_ENV
+        run: echo "VERSION=0.0.3" >> $GITHUB_ENV
 
       # Step 4: Set up Node.js
       - name: Set up Node.js
@@ -58,6 +58,7 @@ jobs:
       - name: Upload to gdrive
         uses: adityak74/google-drive-upload-git-action@main
         with:
+          name: app-dev-release-v${{ env.VERSION }}.apk
           credentials: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}
           filename: "android/app/build/outputs/apk/dev/release/app-dev-release.apk"
           folderId: ${{ secrets.UPLOAD_FOLDER }}
