@@ -62,3 +62,4 @@ jobs:
           credentials: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}
           filename: "android/app/build/outputs/apk/dev/release/app-dev-release.apk"
           folderId: ${{ secrets.UPLOAD_FOLDER }}
+          overwrite: "true"
