@@ -77,7 +77,7 @@ jobs:
 
           # Write the service account JSON key to the defined location using printf
           mkdir -p $(dirname $CREDENTIALS_PATH)
-          echo "${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}" | jq . > $CREDENTIALS_PATH
+          echo "${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}" > $CREDENTIALS_PATH
 
           # Ensure the file has proper permissions (readable)
           chmod 600 $CREDENTIALS_PATH
