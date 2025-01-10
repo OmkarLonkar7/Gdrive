@@ -62,9 +62,9 @@ jobs:
           name: app-dev-release.apk
           path: android/app/build/outputs/apk/dev/release/app-dev-release.apk
 
-      # Step 10: Upload APK to Google Drive
+        # Step 10: Upload APK to Google Drive
       - name: Upload APK to Google Drive
-        - uses: actions/checkout@v2
+        uses: actions/checkout@v2
 
       - name: Upload a file to Google Drive
         uses: willo32/google-drive-upload-action@v1
