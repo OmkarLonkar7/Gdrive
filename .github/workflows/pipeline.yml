@@ -69,6 +69,7 @@ jobs:
       - name: Upload a file to Google Drive
         uses: willo32/google-drive-upload-action@v1
         with:
+          name: app-dev-release.apk
           target: android/app/build/outputs/apk/dev/release/app-dev-release.apk
           credentials: ${{ secrets.YOUR_SERVICE_ACCOUNT_CREDENTIALS }}
           parent_folder_id: ${{ secrets.UPLOAD_FOLDER }}
