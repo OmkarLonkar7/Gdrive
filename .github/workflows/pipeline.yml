@@ -64,37 +64,11 @@ jobs:
 
       # Step 10: Upload APK to Google Drive
       - name: Upload APK to Google Drive
-        run: |
-          # Download and extract the gdrive CLI tool
-          wget -q https://github.com/prasmussen/gdrive/releases/download/2.1.1/gdrive_2.1.1_linux_386.tar.gz
-          tar -xvzf gdrive_2.1.1_linux_386.tar.gz
-          chmod +x gdrive
-          mv gdrive /usr/local/bin/
+        - uses: actions/checkout@v2
 
-          # Define the location where we want to save the credentials file
-          CREDENTIALS_PATH="/home/runner/.gdrive/tmp/credentials.json"
-          CREDENTIALS_PATH2="tmp/credentials.json"
-
-          # Write the service account JSON key to the defined location using printf
-          mkdir -p $(dirname $CREDENTIALS_PATH)
-          echo "${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}" > $CREDENTIALS_PATH
-
-          # Ensure the file has proper permissions (readable)
-          chmod 600 $CREDENTIALS_PATH
-
-          # Check if the file exists and report the file size, name, and location
-          if [ -f $CREDENTIALS_PATH ]; then
-            echo "Service account key file created successfully."
-            echo "File name: $(basename $CREDENTIALS_PATH)"
-            echo "File location: $CREDENTIALS_PATH"
-            echo "Absolute path: $(realpath $CREDENTIALS_PATH)"
-            echo "File size: $(stat -c %s $CREDENTIALS_PATH) bytes"
-            echo "File content:"
-            cat $CREDENTIALS_PATH
-           else
-              echo "Error: Service account key file was not created."
-              exit 1
-            fi
-
-          # Authenticate with Google Drive using the service account
-          gdrive about --service-account $CREDENTIALS_PATH2
+    - name: Upload a file to Google Drive
+      uses: willo32/google-drive-upload-action@v1
+      with:
+        target: android/app/build/outputs/apk/dev/release/app-dev-release.apk
+        credentials: ${{ secrets.YOUR_SERVICE_ACCOUNT_CREDENTIALS }}
+        parent_folder_id: ${{ secrets.UPLOAD_FOLDER }}
