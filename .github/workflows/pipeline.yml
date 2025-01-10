@@ -66,10 +66,8 @@ jobs:
         uses: adityak74/google-drive-upload-git-action@main
         with:
           credentials: ${{ secrets.credentials }}
-          filename: "archive.zip"
+          filename: "android/app/build/outputs/apk/dev/release/app-dev-release.apk"
           folderId: ${{ secrets.folderId }}
-          name: "documentation.zip" # optional string
-          overwrite: "true" # optional boolean
       - name: Make Directory Structure
         run: |
           mkdir -p w/x/y
