@@ -55,11 +55,20 @@ jobs:
           cd android
           ./gradlew assembleDevRelease
 
+      # - name: Upload to gdrive
+      #   uses: adityak74/google-drive-upload-git-action@main
+      #   with:
+      #     name: app-dev-release-v${{ env.VERSION }}.apk
+      #     credentials: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}
+      #     filename: "android/app/build/outputs/apk/dev/release/app-dev-release.apk"
+      #     folderId: ${{ secrets.UPLOAD_FOLDER }}
+      #     overwrite: "true"
+
       - name: Upload to gdrive
-        uses: adityak74/google-drive-upload-git-action@main
+        uses: mathisve/gdrive-upload-action@main
         with:
-          name: app-dev-release-v${{ env.VERSION }}.apk
-          credentials: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}
           filename: "android/app/build/outputs/apk/dev/release/app-dev-release.apk"
+          name: app-dev-release-v${{ env.VERSION }}.apk
           folderId: ${{ secrets.UPLOAD_FOLDER }}
-          overwrite: "true"
+          credentials: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}
+          encoded: true
