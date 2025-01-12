@@ -65,7 +65,7 @@ jobs:
       #     overwrite: "true"
       # Step 5: Log folder ID for debugging
       - name: Log Folder ID
-        run: echo "Folder ID => ${{ secrets.G_DRIVE_OPERATOR_DIR_ID }}"
+        run: echo "Folder ID => ${{ secrets.UPLOAD_FOLDER }}"
 
       - name: Upload to gdrive
         uses: mathisve/gdrive-upload-action@main
