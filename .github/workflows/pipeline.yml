@@ -63,6 +63,9 @@ jobs:
       #     filename: "android/app/build/outputs/apk/dev/release/app-dev-release.apk"
       #     folderId: ${{ secrets.UPLOAD_FOLDER }}
       #     overwrite: "true"
+      # Step 5: Log folder ID for debugging
+      - name: Log Folder ID
+        run: echo "Folder ID => ${{ secrets.G_DRIVE_OPERATOR_DIR_ID }}"
 
       - name: Upload to gdrive
         uses: mathisve/gdrive-upload-action@main
